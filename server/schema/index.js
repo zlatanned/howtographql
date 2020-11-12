@@ -1,21 +1,55 @@
 const graphql = require('graphql');
 const _ = require('lodash');
 
-const { GraphQLObjectType, GraphQLString, GraphQLSchema } = graphql;
+const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList } = graphql;
 
 // dummy data
 var players = [
-    { name: 'Lionel Messi', nationality: 'Argentina', id: '1' },
-    { name: 'Cristiano Ronaldo', nationality: 'Portugal', id: '2' },
-    { name: 'Eden Hazard', nationality: 'Belgium', id: '3' },
+    { name: 'Lionel Messi', nationality: 'Argentina', club: 'FC Barcelona', age:33, id: '1' },
+    { name: 'Cristiano Ronaldo', nationality: 'Portugal', club: 'Juventus', age:35, id: '2' },
+    { name: 'Eden Hazard', nationality: 'Belgium', club: 'Real Madrid C.F.', age:29, id: '3' },
+    { name: 'Hakim Ziyech', nationality: 'Morocco', club: 'Chelsea F.C.', age:27, id: '4' },
+    { name: 'Angel Di Maria', nationality: 'Argentina', club: 'Paris St. Germain', age:32, id: '5' },
+    { name: 'Kevin De Bruyne', nationality: 'Belgium', club: 'Manchester City', age:29, id: '6' }
+];
+
+const leagues = [
+    { name: 'Premier League', nation: 'England', id: '1' },
+    { name: 'La Liga', nation: 'Spain', id: '2' },
+    { name: 'Serie A', nation: 'Italy', id: '3' },
+    { name: 'Ligue 1', nation: 'France', id: '4' }
 ];
 
 const PlayerType = new GraphQLObjectType({
     name: 'Player',
     fields: ( ) => ({
-        id: { type: GraphQLString },
+        id: { type: GraphQLID },
         name: { type: GraphQLString },
-        nationality: { type: GraphQLString }
+        nationality: { type: GraphQLString },
+        club: { type: GraphQLString },
+        age: { type: GraphQLInt },
+        league: {
+            type: LeagueType,
+            resolve(parent, args){
+                console.log(parent);
+                return _.find(leagues, { id: parent.leagueId });
+            }
+        }
+    })
+});
+
+const LeagueType = new GraphQLObjectType({
+    name: 'League',
+    fields: ( ) => ({
+        id: { type: GraphQLID },
+        name: { type: GraphQLString },
+        nation: { type: GraphQLString },
+        players: {
+            type: new GraphQLList(PlayerType),
+            resolve(parent, args){
+                return _.filter(players, { authorId: parent.id });
+            }
+        }
     })
 });
 
@@ -24,10 +58,18 @@ const RootQuery = new GraphQLObjectType({
     fields: {
         player: {
             type: PlayerType,
-            args: { id: { type: GraphQLString } },
+            args: { id: { type: GraphQLID } },
             resolve(parent, args){
                 // code to get data from db / other source
-                return _.find(players, { id: args.id })
+                console.log(typeof(args.id));
+                return _.find(players, { id: args.id });
+            }
+        },
+        league: {
+            type: LeagueType,
+            args: { id: { type: GraphQLID } },
+            resolve(parent, args){
+                return _.find(leagues, { id: args.id });
             }
         }
     }
