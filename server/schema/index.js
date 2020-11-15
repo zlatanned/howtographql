@@ -5,12 +5,12 @@ const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, 
 
 // dummy data
 var players = [
-    { name: 'Lionel Messi', nationality: 'Argentina', club: 'FC Barcelona', age:33, id: '1' },
-    { name: 'Cristiano Ronaldo', nationality: 'Portugal', club: 'Juventus', age:35, id: '2' },
-    { name: 'Eden Hazard', nationality: 'Belgium', club: 'Real Madrid C.F.', age:29, id: '3' },
-    { name: 'Hakim Ziyech', nationality: 'Morocco', club: 'Chelsea F.C.', age:27, id: '4' },
-    { name: 'Angel Di Maria', nationality: 'Argentina', club: 'Paris St. Germain', age:32, id: '5' },
-    { name: 'Kevin De Bruyne', nationality: 'Belgium', club: 'Manchester City', age:29, id: '6' }
+    { name: 'Lionel Messi', nationality: 'Argentina', club: 'FC Barcelona', age:33, id: '1', leagueId: '2' },
+    { name: 'Cristiano Ronaldo', nationality: 'Portugal', club: 'Juventus', age:35, id: '2', leagueId: '3' },
+    { name: 'Eden Hazard', nationality: 'Belgium', club: 'Real Madrid C.F.', age:29, id: '3', leagueId: '2' },
+    { name: 'Hakim Ziyech', nationality: 'Morocco', club: 'Chelsea F.C.', age:27, id: '4', leagueId: '1' },
+    { name: 'Angel Di Maria', nationality: 'Argentina', club: 'Paris St. Germain', age:32, id: '5', leagueId: '4' },
+    { name: 'Kevin De Bruyne', nationality: 'Belgium', club: 'Manchester City', age:29, id: '6', leagueId: '1' }
 ];
 
 const leagues = [
