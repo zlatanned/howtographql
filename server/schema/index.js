@@ -1,10 +1,15 @@
 const graphql = require('graphql');
 const _ = require('lodash');
 
-const { GraphQLObjectType, GraphQLString, GraphQLSchema, GraphQLID, GraphQLInt, GraphQLList } = graphql;
+const { GraphQLObjectType,
+        GraphQLString,
+        GraphQLSchema,
+        GraphQLID,
+        GraphQLInt,
+        GraphQLList } = graphql;
 
 // dummy data
-var players = [
+const players = [
     { name: 'Lionel Messi', nationality: 'Argentina', club: 'FC Barcelona', age:33, id: '1', leagueId: '2' },
     { name: 'Cristiano Ronaldo', nationality: 'Portugal', club: 'Juventus', age:35, id: '2', leagueId: '3' },
     { name: 'Eden Hazard', nationality: 'Belgium', club: 'Real Madrid C.F.', age:29, id: '3', leagueId: '2' },
@@ -31,7 +36,7 @@ const PlayerType = new GraphQLObjectType({
         league: {
             type: LeagueType,
             resolve(parent, args){
-                console.log(parent);
+                //console.log(parent);
                 return _.find(leagues, { id: parent.leagueId });
             }
         }
@@ -61,7 +66,7 @@ const RootQuery = new GraphQLObjectType({
             args: { id: { type: GraphQLID } },
             resolve(parent, args){
                 // code to get data from db / other source
-                console.log(typeof(args.id));
+                //console.log(typeof(args.id));
                 return _.find(players, { id: args.id });
             }
         },
