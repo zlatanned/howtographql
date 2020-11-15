@@ -2,20 +2,20 @@ const graphql = require('graphql');
 const _ = require('lodash');
 
 const { GraphQLObjectType,
-        GraphQLString,
-        GraphQLSchema,
-        GraphQLID,
-        GraphQLInt,
-        GraphQLList } = graphql;
+    GraphQLString,
+    GraphQLSchema,
+    GraphQLID,
+    GraphQLInt,
+    GraphQLList } = graphql;
 
 // dummy data
 const players = [
-    { name: 'Lionel Messi', nationality: 'Argentina', club: 'FC Barcelona', age:33, id: '1', leagueId: '2' },
-    { name: 'Cristiano Ronaldo', nationality: 'Portugal', club: 'Juventus', age:35, id: '2', leagueId: '3' },
-    { name: 'Eden Hazard', nationality: 'Belgium', club: 'Real Madrid C.F.', age:29, id: '3', leagueId: '2' },
-    { name: 'Hakim Ziyech', nationality: 'Morocco', club: 'Chelsea F.C.', age:27, id: '4', leagueId: '1' },
-    { name: 'Angel Di Maria', nationality: 'Argentina', club: 'Paris St. Germain', age:32, id: '5', leagueId: '4' },
-    { name: 'Kevin De Bruyne', nationality: 'Belgium', club: 'Manchester City', age:29, id: '6', leagueId: '1' }
+    { name: 'Lionel Messi', nationality: 'Argentina', club: 'FC Barcelona', age: 33, id: '1', leagueId: '2' },
+    { name: 'Cristiano Ronaldo', nationality: 'Portugal', club: 'Juventus', age: 35, id: '2', leagueId: '3' },
+    { name: 'Eden Hazard', nationality: 'Belgium', club: 'Real Madrid C.F.', age: 29, id: '3', leagueId: '2' },
+    { name: 'Hakim Ziyech', nationality: 'Morocco', club: 'Chelsea F.C.', age: 27, id: '4', leagueId: '1' },
+    { name: 'Angel Di Maria', nationality: 'Argentina', club: 'Paris St. Germain', age: 32, id: '5', leagueId: '4' },
+    { name: 'Kevin De Bruyne', nationality: 'Belgium', club: 'Manchester City', age: 29, id: '6', leagueId: '1' }
 ];
 
 const leagues = [
@@ -27,7 +27,7 @@ const leagues = [
 
 const PlayerType = new GraphQLObjectType({
     name: 'Player',
-    fields: ( ) => ({
+    fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         nationality: { type: GraphQLString },
@@ -35,7 +35,7 @@ const PlayerType = new GraphQLObjectType({
         age: { type: GraphQLInt },
         league: {
             type: LeagueType,
-            resolve(parent, args){
+            resolve(parent, args) {
                 //console.log(parent);
                 return _.find(leagues, { id: parent.leagueId });
             }
@@ -45,13 +45,13 @@ const PlayerType = new GraphQLObjectType({
 
 const LeagueType = new GraphQLObjectType({
     name: 'League',
-    fields: ( ) => ({
+    fields: () => ({
         id: { type: GraphQLID },
         name: { type: GraphQLString },
         nation: { type: GraphQLString },
         players: {
             type: new GraphQLList(PlayerType),
-            resolve(parent, args){
+            resolve(parent, args) {
                 return _.filter(players, { authorId: parent.id });
             }
         }
@@ -64,7 +64,7 @@ const RootQuery = new GraphQLObjectType({
         player: {
             type: PlayerType,
             args: { id: { type: GraphQLID } },
-            resolve(parent, args){
+            resolve(parent, args) {
                 // code to get data from db / other source
                 //console.log(typeof(args.id));
                 return _.find(players, { id: args.id });
@@ -73,7 +73,7 @@ const RootQuery = new GraphQLObjectType({
         league: {
             type: LeagueType,
             args: { id: { type: GraphQLID } },
-            resolve(parent, args){
+            resolve(parent, args) {
                 return _.find(leagues, { id: args.id });
             }
         }
