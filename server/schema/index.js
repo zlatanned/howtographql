@@ -82,6 +82,12 @@ const RootQuery = new GraphQLObjectType({
             resolve(parent, args){
                 return players;
             }
+        },
+        leagues: {
+            type: new GraphQLList(LeagueType),
+            resolve(parent, args){
+                return leagues;
+            }
         }
     }
 });
