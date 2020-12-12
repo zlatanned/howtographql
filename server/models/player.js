@@ -3,9 +3,9 @@ const Schema = mongoose.Schema;
 
 const playerSchema = new Schema({
     name: String,
-    nationality: String,
+    position: String,
     club: String,
-    age: Number,
+    nationality: String,
     leagueId: String 
 });
 
