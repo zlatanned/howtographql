@@ -1,5 +1,7 @@
 const graphql = require('graphql');
 const _ = require('lodash');
+const League = require('../models/league');
+const Player = require('../models/player');
 
 const { GraphQLObjectType,
     GraphQLString,
@@ -89,6 +91,27 @@ const RootQuery = new GraphQLObjectType({
     }
 });
 
+const Mutation = new GraphQLObjectType({
+    name: 'Mutation',
+    fields: {
+        addLeague: {
+            type: LeagueType,
+            args: {
+                name: { type: GraphQLString },
+                nation: { type: GraphQLString }
+            },
+            resolve(parent, args){
+                let league = new League({
+                    name: args.name,
+                    nation: args.nation
+                });
+                return league.save();
+            }
+        }
+    }
+});
+
 module.exports = new GraphQLSchema({
-    query: RootQuery
+    query: RootQuery,
+    mutation: Mutation
 });
