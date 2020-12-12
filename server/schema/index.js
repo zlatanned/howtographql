@@ -90,6 +90,26 @@ const Mutation = new GraphQLObjectType({
                 });
                 return league.save();
             }
+        },
+        addPlayer: {
+            type: PlayerType,
+            args: {
+                name: { type: GraphQLString },
+                position: { type: GraphQLString },
+                club: { type: GraphQLString },
+                nationality: { type: GraphQLString },
+                leagueId: { type: GraphQLID }
+            },
+            resolve(parent, args){
+                let player = new Player({
+                    name: args.name,
+                    position: args.position,
+                    club: args.club,
+                    nationality: args.nationality,
+                    leagueId: args.leagueId
+                });
+                return player.save();
+            }
         }
     }
 });
