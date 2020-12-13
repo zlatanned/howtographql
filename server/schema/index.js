@@ -7,7 +7,6 @@ const { GraphQLObjectType,
     GraphQLString,
     GraphQLSchema,
     GraphQLID,
-    GraphQLInt,
     GraphQLList } = graphql;
 
 const PlayerType = new GraphQLObjectType({
@@ -17,11 +16,11 @@ const PlayerType = new GraphQLObjectType({
         name: { type: GraphQLString },
         nationality: { type: GraphQLString },
         club: { type: GraphQLString },
-        age: { type: GraphQLInt },
+        position: { type: GraphQLString },
         league: {
             type: LeagueType,
             resolve(parent, args) {
-                //return _.find(leagues, { id: parent.leagueId });
+                return League.findById(parent.leagueId);
             }
         }
     })
@@ -36,7 +35,7 @@ const LeagueType = new GraphQLObjectType({
         players: {
             type: new GraphQLList(PlayerType),
             resolve(parent, args) {
-                //return _.filter(players, { authorId: parent.id });
+                return Player.find({ leagueId: parent.id });
             }
         }
     })
@@ -49,26 +48,26 @@ const RootQuery = new GraphQLObjectType({
             type: PlayerType,
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
-                //return _.find(players, { id: args.id });
+                return Player.findById(args.id);
             }
         },
         league: {
             type: LeagueType,
             args: { id: { type: GraphQLID } },
             resolve(parent, args) {
-                //return _.find(leagues, { id: args.id });
+                return Author.findById(args.id);
             }
         },
         players: {
             type: new GraphQLList(PlayerType),
             resolve(parent, args){
-                //return players;
+                return Player.find({});
             }
         },
         leagues: {
             type: new GraphQLList(LeagueType),
             resolve(parent, args){
-                //return leagues;
+                return League.find({});
             }
         }
     }
